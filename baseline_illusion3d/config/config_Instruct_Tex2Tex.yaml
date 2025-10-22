@@ -1,0 +1,135 @@
+# hash mlp
+hashgrid_config:
+  dtype: half
+  n_levels: 16 #20
+  n_features_per_level: 2 #4 # 1, 2, 4, 8
+  log2_hashmap_size: 19 #24
+  base_resolution: 32 #16
+  max_resolution: 2048 #4096
+
+renderer_config:
+  dim_in: 32 #HAS to be n_levels * n_features_per_level
+  dim_out: 3
+  dim_hidden: 128 #256
+  num_layers: 2 #4
+  std: 0.1 # default: 0.1
+
+# Texture
+latent_texture_size: 256
+latent_channels: 3
+texture_size: 2048
+num_hierarchical_layers: 4
+
+# mesh scale
+scene_scale: 10.0
+
+# the number of different viewpoints from which we want to render the mesh.
+num_views: 300
+num_views_eval: 16
+render_size: 512 # default: 512
+faces_per_pixel: 1
+dist: 3.0
+at: [[0, 0, 0]]
+
+# angle deviation threshold
+angle_deviation_threshold: 0.5 # set to 0.5 which is 60 degrees
+
+# Number of particles in the VSD
+particle_num_vsd: 1
+
+# Number of views to optimize over in each SGD iteration
+batch_size: 1
+num_views_per_iteration: 1
+guidance_scale: 7.5
+
+# Number of optimization steps
+Niter: 4000
+Niter_stage_1: 4000 #default: 500
+Niter_stage_2: 1000 #default: 500
+ref_steps: 500 # default: 100
+
+latent_rgb_optimize: False # default: False
+
+conditioning_scale: 1.0 #fully depth conditioned, 0.0 no depth condition
+
+ref_linear: True # default: True, use linear timesteps; False, use dreamtime timesteps
+
+update_linear: False # default: False, use dreamtime timesteps; True, use linear timesteps
+
+add_noise_before: False # default: True, add noise beofore phase transfer; False, add noise after phase transfer
+
+# Plot period for the losses
+plot_period: 500
+log_step: 100 #200
+
+# Learning rate
+lr: 1e-2 #default: 1e-3
+eps: 1e-4 
+weight_decay: 0.1
+# good settings
+# lr: 1e-2
+# eps: 1e-9
+# weight_decay: 0.1
+
+# vsd
+phi_lr: 1e-4
+lora_scale: 0.5
+
+# seed
+seed: 99
+
+# prompts
+prompt_1: "a castle"
+prompt_2: "make it a japanese style living room"
+a_prompt: ", best quality, high quality, extremely detailed, good geometry, high-res photo"
+n_prompt: "deformed, extra digit, fewer digits, cropped, worst quality, low quality, smoke, shading, lighting, lumination, shadow, text in image, watermarks"
+
+# PTD
+encode_steps: 1000 # default: 1000
+contrast: 2.0
+add_noise: False # default: False
+noise_value: 0.05
+
+exponent: 0.5 # default: 0.5
+direct_transfer_ratio: 0.4 # default: 0.4
+decayed_transfer_ratio: 0.2 # default: 0.2
+
+transfer_weight: 0.0 #0.5 the same value magnitude as the sds loss
+
+transfer_ratio: 0.0 #default: 0.0; if not == 0.0, should be (1 - direct_transfer_ratio - decayed_transfer_ratio) 
+
+blending_ratio_default: 1.0 #default: 1.0 fully use the ref phase in direct transfer stage; if set to 0.0, no phase transfer
+
+# IP2P
+t_dec: 20
+image_guidance_scale_ip2p: 1.0 # decrease the cs would create better results w depth condition
+image_guidance_scale_ip2p_ptd: 1.0 # increase the cs would make the results more similar to the input image 
+lower_bound: 0.98 # the higher the better
+upper_bound: 0.99 # the higher the better
+
+edit_rate: 10 # higher value, faster training, less editing
+
+interpolate_scale: 1.0 # default: 1.0, no interpolation; 0.0, full interpolation
+async_ahead_steps: 20 # default: 0, no async ahead; [-10, 10] (original PTD), the higher the better embedding effects
+
+secret_view_name: "DSC00043.png"
+secret_view_name_2: "DSC00302.png"
+secret_view_idx: 6
+secret_weight: 0.5 # default: 0.5
+secret_update_rate: 1 # default: 1, every secret_update_rate iters, update once for a secret view, every iter, update once for a non-secret view.
+
+init_flag: False # default: True, use Stage 1 and Stage 2; False, only use Stage 2
+
+# GaussTrap
+angle_limits: [15.0, 3.0] # default: [13, 15], angular perturbations list, unit: ^\circ
+
+num_attack_iters: 15
+num_stabilize_iters: 5
+num_normal_iters: 5
+
+num_epochs: 50 #2500
+epoch_period: 5 #500
+
+use_mse_loss: False # default: True, use MSE loss; False, use L1 + D-SSIM loss
+
+l1_weight: 0.5 # default: 0.5, weight for L1 loss

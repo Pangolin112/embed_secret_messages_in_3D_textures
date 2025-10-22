@@ -1,0 +1,69 @@
+# hash mlp
+hashgrid_config:
+  dtype: half
+  n_levels: 16 #20
+  n_features_per_level: 2 #4 # 1, 2, 4, 8
+  log2_hashmap_size: 19 #24
+  base_resolution: 32 #16
+  max_resolution: 2048 #4096
+
+renderer_config:
+  dim_in: 32 #HAS to be n_levels * n_features_per_level
+  dim_out: 3
+  dim_hidden: 128 #256
+  num_layers: 2 #4
+
+# Texture
+latent_texture_size: 256
+latent_channels: 3
+texture_size: 128 #2048
+num_hierarchical_layers: 1 #4
+
+# the number of different viewpoints from which we want to render the mesh.
+num_views: 300
+num_views_eval: 16
+render_size: 512
+faces_per_pixel: 1
+dist: 2.7 #2.0
+at: [[0, 0, 0]]
+
+# angle deviation threshold
+angle_deviation_threshold: 0.5 # set to 0.5 which is 60 degrees
+
+# Number of particles in the VSD
+particle_num_vsd: 1
+
+# Number of views to optimize over in each SGD iteration
+batch_size: 1
+num_views_per_iteration: 1
+guidance_scale: 6.5
+conditioning_scale: 1.0
+
+# Number of optimization steps
+Niter: 4000
+
+# Plot period for the losses
+plot_period: 1000
+log_step: 200
+
+# Learning rate
+lr: 1e-3
+eps: 1e-4 
+weight_decay: 0.1
+# good settings
+# lr: 1e-2
+# eps: 1e-9
+# weight_decay: 0.1
+
+# vsd
+phi_lr: 1e-4
+lora_scale: 0.5
+
+# seed
+seed: 99
+
+# prompts
+prompt_1: "A cat"
+prompt_2: "A cow"
+a_prompt: ", best quality, high quality, extremely detailed, good geometry, high-res photo"
+n_prompt: "deformed, extra digit, fewer digits, cropped, worst quality, low quality, smoke, shading, lighting, lumination, shadow, text in image, watermarks"
